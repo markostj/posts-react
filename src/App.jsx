@@ -1,17 +1,18 @@
 import React from "react";
 import { BrowserRouter, Switch, Redirect, Route } from "react-router-dom";
-import {AppLayout} from "./components"
-import { Posts, PostsDetails, ErrorPage} from "./views"
+import { AppLayout } from "./components";
+import { Posts, PostsDetails, ErrorPage } from "./views";
+import "./css/App.css";
 
-export const App = () => 
-<BrowserRouter>
-<AppLayout>
-  <Switch>
-    <Redirect exact from="/" to="/posts" />
-    <Route exact path="/posts"  component={Posts} />
-    <Route path="/posts/:id" component={PostsDetails} />
-    <Route component={ErrorPage} />
-  </Switch>
-</AppLayout>
-</BrowserRouter>
-;
+export const App = () => (
+  <BrowserRouter>
+    <AppLayout>
+      <Switch>
+        <Redirect exact from="/" to="/posts" />
+        <Route exact path="/posts" component={Posts} />
+        <Route path="/posts/:id" component={PostsDetails} />
+        <Route component={ErrorPage} />
+      </Switch>
+    </AppLayout>
+  </BrowserRouter>
+);

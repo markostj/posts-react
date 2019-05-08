@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import "../css/App.css";
-
 export class PostsDetails extends Component {
+  //dodat paginaciju jos
   state = {
     details: undefined,
     comments: undefined,
@@ -9,16 +8,19 @@ export class PostsDetails extends Component {
   };
   componentDidMount() {
     const { match } = this.props;
+
     if (match && match.params.id) {
       fetch(`https://jsonplaceholder.typicode.com/posts/${match.params.id}`)
         .then(response => response.json())
-        .then(details =>
+        .then(details => {
           this.setState({
             details
-          })
-        )
-        .then(() =>
-          fetch(`https://jsonplaceholder.typicode.com/users/${match.params.id}`)
+          });
+
+          return details.userId;
+        })
+        .then(userId =>
+          fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
             .then(response => response.json())
             .then(author => this.setState({ author }))
         )
@@ -34,31 +36,54 @@ export class PostsDetails extends Component {
         .catch(error => console.log(error));
     }
   }
-  renderAuthor = ({ id, username, website }) => (
-    <div className="author" key={id}>
-      <p className="author__username">{username}</p>
-      <p className="author__website">{website}</p>
-    </div>
-  );
-
-  renderItem = ({ id, name, email, body }) => (
-    <div className="comments" key={id}>
-      <p className="comments__name">{name}</p>
-      <p className="comments__email">{email}</p>
-      <p>{body}</p>
-    </div>
-  );
-  
-  render() {
-    const { comments, author } = this.state;
-    console.log(author);
+  renderComments = () => {
+    const { comments } = this.state;
     if (!comments) {
       return <p>Nema komentara</p>;
     }
+
+    return comments.map(item => (
+      <div className="comments" key={item.id}>
+        <p className="comments__name">{item.name}</p>
+        <p className="comments__email">{item.email}</p>
+        <p>{item.body}</p>
+      </div>
+    ));
+  };
+
+  renderPostDetails = () => {
+    const { details } = this.state;
+    if (!details) {
+      return <p>Podaci nisu dostupni</p>;
+    }
+
+    return (
+      <div className="post" key={details.id}>
+        <p className="post__title">{details.title}</p>
+        <p className="post__body">{details.body}</p>
+      </div>
+    );
+  };
+  renderAuthor = () => {
+    const { author } = this.state;
+    if (!author) {
+      return false;
+    }
+
+    return (
+      <div className="author" key={author.id}>
+        <p className="author__username">{author.username}</p>
+        <p className="author__website">{author.website}</p>
+      </div>
+    );
+  };
+
+  render() {
     return (
       <div className="wrapper">
         {this.renderAuthor()}
-        {comments.map(item => this.renderItem(item))}
+        {this.renderPostDetails()}
+        {this.renderComments()}
       </div>
     );
   }

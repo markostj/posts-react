@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../css/App.css";
 import { Link } from "react-router-dom";
 
 export class Posts extends Component {
@@ -18,7 +17,9 @@ export class Posts extends Component {
   }
   renderItem = ({ id, title }) => (
     <div key={id}>
-      <Link className="posts__title" to={`/posts/${id}`}>{title}</Link>
+      <Link className="posts" to={`/posts/${id}`}>
+        <p className="posts__title">{title}</p>
+      </Link>
     </div>
   );
 
@@ -28,9 +29,12 @@ export class Posts extends Component {
       return <p>Loader</p>;
     }
     return (
-      <div className="wrapper">
-        {posts.map(item => this.renderItem(item))}
-      </div>
+      <>
+        <h1 className="posts__headline">Posts</h1>
+        <div className="wrapper">
+          {posts.map(item => this.renderItem(item))}
+        </div>
+      </>
     );
   }
 }
