@@ -63,3 +63,24 @@ body {
 .post__body::first-letter {
   text-transform: uppercase;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+.pagination__item {
+  margin: 0 5px;
+}
+.pagination__item--active {
+  /*zasto ne valja na active */
+  font-weight: bold;
+  color: red;
+}
+.pagination__pages {
+  text-align: center;
+  font-style: italic;
+}
+.pagination__pages::first-letter {
+  text-transform: uppercase;
+}
